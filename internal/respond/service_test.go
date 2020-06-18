@@ -59,7 +59,7 @@ func TestService_Respond(t *testing.T) {
 		res := s.Respond("")
 
 		//then
-		assert.Contains(t, res, "whoops, looks like you sent me an empty phrase by accident.")
+		assert.Equal(t, res, "whoops, looks like you sent me an empty phrase by accident.")
 	})
 
 	t.Run("given I ask for help, I receive the help response", func(t *testing.T) {
@@ -67,7 +67,7 @@ func TestService_Respond(t *testing.T) {
 		validHelpPhrase := "help"
 		res := s.Respond(validHelpPhrase)
 
-		assert.Equal(t, res, "Hi! Try saying explain WWW to me or explain CFPS."+
+		assert.Equal(t, res, "Hi! Try saying explain WWW to me."+
 			"If I dont support a phrase you think would be useful for others, you can add it with the add command.")
 	})
 
@@ -157,7 +157,7 @@ func TestService_Respond(t *testing.T) {
 		s := respond.Service{}
 		res := s.Respond("hi")
 
-		assert.Equal(t, "Hi! Try saying explain WWW to me or explain CFPS."+
+		assert.Equal(t, "Hi! Try saying explain WWW to me."+
 			"If I dont support a phrase you think would be useful for others, you can add it with the add command.", res)
 	})
 

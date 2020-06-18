@@ -2,7 +2,8 @@ package respond
 
 import (
 	"encoding/json"
-	"fmt"
+	"github.com/matthewjamesboyle/google-chat-acronym-bot/internal/logging"
+	"go.uber.org/zap"
 	"net/http"
 	"time"
 )
@@ -63,8 +64,7 @@ func (h HttpGchatRespondHandler) ServeHTTP(w http.ResponseWriter, r *http.Reques
 	var m MessageRequest
 	err := json.NewDecoder(r.Body).Decode(&m)
 	if err != nil {
-		//todo: log
-		fmt.Println("error here:", err.Error())
+		logging.FromContext(r.Context()).Error("ServeHTTP:err_decode", zap.Error(err))
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -74,7 +74,7 @@ func (h HttpGchatRespondHandler) ServeHTTP(w http.ResponseWriter, r *http.Reques
 	err = json.NewEncoder(w).Encode(jres)
 	if err != nil {
 		//todo: log
-		fmt.Println("error here 2:", err.Error())
+		logging.FromContext(r.Context()).Error("ServeHTTP:err_encode", zap.Error(err))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
